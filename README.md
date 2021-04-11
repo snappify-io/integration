@@ -41,20 +41,21 @@ yarn add @snappify/integration
 > Be aware that we restrict the integration of snappify by platforms at the moment. Are you interested? Hit us up at info@snappify.io
 
 ```ts
-import { openSnappify } from "@snappify/integration";
+import { openSnappify } from '@snappify/integration';
 
 async function() {
   try {
     const blob = await openSnappify(
       { // pass the information of the user
-        displayName: "Elon Musk",
-        userName: "elonmusk",
+        displayName: 'Elon Musk',
+        userName: 'elonmusk',
         image:
-          "https://pbs.twimg.com/profile_images/1364491704817098753/V22-Luf7_400x400.jpg",
+          'https://pbs.twimg.com/profile_images/1364491704817098753/V22-Luf7_400x400.jpg',
       }
     );
 
-    // do something with the blob, e.g. create an object url to show it in an img tag: URL.createObjectURL(blob);
+    // do something with the blob, e.g. create an object url to show it in an img tag:
+    // URL.createObjectURL(blob);
   } catch (error) {
     // error handling
   }
