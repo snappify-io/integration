@@ -1,5 +1,3 @@
-export type SnappifyCallback = (blob: Blob) => void;
-
 export interface SnappifyConfig {
   url?: string;
 }

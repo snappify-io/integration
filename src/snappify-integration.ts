@@ -1,4 +1,4 @@
-import { SnappifyCallback, UserInfo, SnappifyConfig } from './types';
+import { UserInfo, SnappifyConfig } from './types';
 
 const DEFAULT_CONFIG: SnappifyConfig = {
   url: 'https://snappify.io',
@@ -8,7 +8,8 @@ export class SnappifyIntegration {
   data?: {
     config: SnappifyConfig;
     user: UserInfo;
-    callback: SnappifyCallback;
+    resolve: (blob: Blob) => void;
+    reject: (reason: any) => void;
     container?: HTMLDivElement;
     iframe?: HTMLIFrameElement;
   };
@@ -19,42 +20,41 @@ export class SnappifyIntegration {
     this.teardown = this.teardown.bind(this);
   }
 
-  openSnappify(
-    user: UserInfo,
-    callback: SnappifyCallback,
-    _config?: SnappifyConfig
-  ) {
-    if (this.data) {
-      return;
-    }
-    this.data = {
-      callback,
-      config: Object.assign({}, DEFAULT_CONFIG, _config),
-      user,
-    };
+  openSnappify(user: UserInfo, _config?: SnappifyConfig) {
+    return new Promise<Blob>((resolve, reject) => {
+      if (this.data) {
+        return;
+      }
+      this.data = {
+        resolve,
+        reject,
+        config: Object.assign({}, DEFAULT_CONFIG, _config),
+        user,
+      };
 
-    const container = document.createElement('div');
-    container.className = '__snappify-container';
+      const container = document.createElement('div');
+      container.className = '__snappify-container';
 
-    const wrapper = document.createElement('div');
-    wrapper.className = '__snappify-wrapper';
+      const wrapper = document.createElement('div');
+      wrapper.className = '__snappify-wrapper';
 
-    const loadingSpinner = document.createElement('div');
-    loadingSpinner.innerHTML =
-      '<div><div></div><div class="double-bounce2"></div></div>';
+      const loadingSpinner = document.createElement('div');
+      loadingSpinner.innerHTML =
+        '<div><div></div><div class="double-bounce2"></div></div>';
 
-    const iframe = document.createElement('iframe');
-    iframe.src = this.data.config.url + '/i';
+      const iframe = document.createElement('iframe');
+      iframe.src = this.data.config.url + '/i';
 
-    wrapper.appendChild(loadingSpinner);
-    wrapper.appendChild(iframe);
-    container.appendChild(wrapper);
+      wrapper.appendChild(loadingSpinner);
+      wrapper.appendChild(iframe);
+      container.appendChild(wrapper);
 
-    window.addEventListener('message', this.onMessage);
-    this.data.container = container;
-    this.data.iframe = iframe;
-    container.onclick = this.teardown;
-    document.body.appendChild(container);
+      window.addEventListener('message', this.onMessage);
+      this.data.container = container;
+      this.data.iframe = iframe;
+      container.onclick = this.teardown;
+      document.body.appendChild(container);
+    });
   }
 
   private onMessage(event: MessageEvent) {
@@ -78,7 +78,12 @@ export class SnappifyIntegration {
             this.teardown();
             break;
           case 'image':
-            this.data.callback(event.data.blob);
+            this.data.resolve(event.data.blob);
+            this.teardown();
+            break;
+          case 'error':
+            console.error('Snappify reported an error: ', event.data.error);
+            this.data.reject(event.data.error);
             this.teardown();
             break;
         }
