@@ -37,11 +37,11 @@
   "size-limit": [
     {
       "path": "dist/integration.cjs.production.min.js",
-      "limit": "4 KB"
+      "limit": "2 KB"
     },
     {
       "path": "dist/integration.esm.js",
-      "limit": "4 KB"
+      "limit": "2 KB"
     }
   ],
   "devDependencies": {
