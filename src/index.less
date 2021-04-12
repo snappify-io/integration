@@ -1,0 +1,94 @@
+@-webkit-keyframes snappify-bounce {
+  0%,
+  100% {
+    -webkit-transform: scale(0);
+  }
+  50% {
+    -webkit-transform: scale(1);
+  }
+}
+@keyframes snappify-bounce {
+  0%,
+  100% {
+    transform: scale(0);
+    -webkit-transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+  }
+}
+
+.__snappify-container {
+  display: flex;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.__snappify-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: white;
+
+  > div {
+    // loading spinner
+    display: flex;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+
+    > div {
+      width: 40px;
+      height: 40px;
+      position: relative;
+      margin: 100px auto;
+
+      > div {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-color: #333;
+        opacity: 0.6;
+        position: absolute;
+        top: 0;
+        left: 0;
+        -webkit-animation: snappify-bounce 2s infinite ease-in-out;
+        animation: snappify-bounce 2s infinite ease-in-out;
+      }
+    }
+    .double-bounce2 {
+      -webkit-animation-delay: -1s;
+      animation-delay: -1s;
+    }
+  }
+
+  > iframe {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 10px;
+  }
+}
+@media screen and (min-width: 970px) {
+  .__snappify-wrapper {
+    width: 80%;
+    height: 82%;
+    border-radius: 10px;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 10%),
+      0 4px 6px -2px rgb(0 0 0 / 5%);
+  }
+}
