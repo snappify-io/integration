@@ -1,5 +1,6 @@
 export interface SnappifyConfig {
   url?: string;
+  thirdCookieCheck: string;
 }
 
 export interface UserInfo {

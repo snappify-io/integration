@@ -2,6 +2,7 @@ import { UserInfo, SnappifyConfig } from './types';
 
 const DEFAULT_CONFIG: SnappifyConfig = {
   url: 'https://snappify.io',
+  thirdCookieCheck: 'https://mindmup.github.io/3rdpartycookiecheck/start.html',
 };
 
 export class SnappifyIntegration {
@@ -43,7 +44,7 @@ export class SnappifyIntegration {
         '<div><div></div><div class="double-bounce2"></div></div>';
 
       const iframe = document.createElement('iframe');
-      iframe.src = this.data.config.url + '/i';
+      iframe.src = this.data.config.thirdCookieCheck;
 
       wrapper.appendChild(loadingSpinner);
       wrapper.appendChild(iframe);
@@ -57,12 +58,33 @@ export class SnappifyIntegration {
     });
   }
 
+  private openSnappifyInIFrame() {
+    if (!this.data || !this.data.iframe) {
+      return;
+    }
+
+    this.data.iframe.src = this.data.config.url + '/i';
+  }
+
   private onMessage(event: MessageEvent) {
     if (!this.data) {
       return;
     }
 
-    if (event.origin === this.data.config.url) {
+    if (this.data.config.thirdCookieCheck.startsWith(event.origin)) {
+      // Msg from 3rd party cookie checker
+      if (event.data === 'MM:3PCsupported') {
+        this.openSnappifyInIFrame();
+      } else {
+        // TODO: Recheck
+        setTimeout(() => {
+          console.error('User blocked third party cookie');
+          this.data?.reject(new Error('User blocked third party cookie'));
+          this.teardown();
+        }, 1000);
+      }
+    } else if (event.origin === this.data.config.url) {
+      // event from snappify
       if (typeof event.data === 'object') {
         switch (event.data.type) {
           case 'loaded':
