@@ -1,8 +1,10 @@
 import { UserInfo, SnappifyConfig } from './types';
 
+const COOKIE_ERROR_MESSAGE =
+  'You have to allow third party cookies to use snappify.';
 const DEFAULT_CONFIG: SnappifyConfig = {
   url: 'https://snappify.io',
-  thirdCookieCheck: 'https://mindmup.github.io/3rdpartycookiecheck/start.html',
+  thirdCookieCheck: 'https://3rdpartycookie.seriouscode.io/start.html',
 };
 
 export class SnappifyIntegration {
@@ -75,11 +77,11 @@ export class SnappifyIntegration {
       // Msg from 3rd party cookie checker
       if (event.data === 'MM:3PCsupported') {
         this.openSnappifyInIFrame();
-      } else {
-        // TODO: Recheck
+      } else if (event.data === 'MM:3PCunsupported') {
+        // Add a bit wait for better UX, otherwise the UI changes too fast
         setTimeout(() => {
-          console.error('User blocked third party cookie');
-          this.data?.reject(new Error('User blocked third party cookie'));
+          console.error(COOKIE_ERROR_MESSAGE);
+          this.data?.reject(new Error(COOKIE_ERROR_MESSAGE));
           this.teardown();
         }, 1000);
       }
