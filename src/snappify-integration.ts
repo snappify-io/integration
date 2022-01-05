@@ -83,7 +83,7 @@ export class SnappifyIntegration {
           console.error(COOKIE_ERROR_MESSAGE);
           this.data?.reject(new Error(COOKIE_ERROR_MESSAGE));
           this.teardown();
-        }, 1000);
+        }, 800);
       }
     } else if (event.origin === this.data.config.url) {
       // event from snappify
