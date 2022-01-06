@@ -2,9 +2,11 @@ import { UserInfo, SnappifyConfig } from './types';
 
 const COOKIE_ERROR_MESSAGE =
   'You have to allow third party cookies to use snappify.';
+const THIRD_PARTY_COOKIE_CHECK_URL =
+  'https://3rdpartycookie.seriouscode.io/start.html';
+
 const DEFAULT_CONFIG: SnappifyConfig = {
   url: 'https://snappify.io',
-  thirdCookieCheck: 'https://3rdpartycookie.seriouscode.io/start.html',
 };
 
 export class SnappifyIntegration {
@@ -46,7 +48,7 @@ export class SnappifyIntegration {
         '<div><div></div><div class="double-bounce2"></div></div>';
 
       const iframe = document.createElement('iframe');
-      iframe.src = this.data.config.thirdCookieCheck;
+      iframe.src = THIRD_PARTY_COOKIE_CHECK_URL;
 
       wrapper.appendChild(loadingSpinner);
       wrapper.appendChild(iframe);
@@ -73,7 +75,7 @@ export class SnappifyIntegration {
       return;
     }
 
-    if (this.data.config.thirdCookieCheck.startsWith(event.origin)) {
+    if (THIRD_PARTY_COOKIE_CHECK_URL.startsWith(event.origin)) {
       // Msg from 3rd party cookie checker
       if (event.data === 'MM:3PCsupported') {
         this.openSnappifyInIFrame();
