@@ -1,4 +1,4 @@
-import { UserInfo, SnappifyConfig } from './types';
+import { SnappifyConfig } from './types';
 
 const COOKIE_ERROR_MESSAGE =
   'You have to allow third party cookies to use snappify.';
@@ -12,7 +12,6 @@ const DEFAULT_CONFIG: SnappifyConfig = {
 export class SnappifyIntegration {
   data?: {
     config: SnappifyConfig;
-    user: UserInfo;
     resolve: (blob: Blob) => void;
     reject: (reason: any) => void;
     container?: HTMLDivElement;
@@ -25,7 +24,7 @@ export class SnappifyIntegration {
     this.teardown = this.teardown.bind(this);
   }
 
-  openSnappify(user: UserInfo, _config?: SnappifyConfig) {
+  openSnappify(_config?: SnappifyConfig) {
     return new Promise<Blob>((resolve, reject) => {
       if (this.data) {
         return;
@@ -34,7 +33,6 @@ export class SnappifyIntegration {
         resolve,
         reject,
         config: Object.assign({}, DEFAULT_CONFIG, _config),
-        user,
       };
 
       const container = document.createElement('div');
@@ -95,7 +93,6 @@ export class SnappifyIntegration {
             this.data.iframe?.contentWindow?.postMessage(
               {
                 type: 'hello',
-                user: this.data.user,
               },
               '*'
             );
