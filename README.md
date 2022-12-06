@@ -1,4 +1,4 @@
-<a href="https://snappify.io/"><img src="https://user-images.githubusercontent.com/4418879/114391549-ec320480-9b97-11eb-8620-3c7afe117878.png"/></a>
+<a href="https://snappify.com/"><img src="https://user-images.githubusercontent.com/4418879/114391549-ec320480-9b97-11eb-8620-3c7afe117878.png"/></a>
 
 <div align="center">
   <img src="https://badgen.net/npm/v/@snappify/integration" alt="Latest release" />
@@ -8,10 +8,10 @@
 
 <br />
 <div align="center"><strong>The official library for integrating snappify into your webapp.</strong></div>
-<div align="center">Interested? Just hit us up at <a href="mailto:info@snappify.io">info@snappify.io</a></div>
+<div align="center">Interested? Just hit us up at <a href="mailto:info@snappify.com">info@snappify.com</a></div>
 <br />
 <div align="center">
-  <a href="https://snappify.io/">Website</a> 
+  <a href="https://snappify.com/">Website</a> 
   <span> · </span>
   <a href="https://twitter.com/snappify_io">Twitter</a>
 </div>
@@ -38,7 +38,7 @@ yarn add @snappify/integration
 
 ## Usage
 
-> Be aware that we restrict the integration of snappify by platforms at the moment. Are you interested? Hit us up at info@snappify.io
+> Be aware that we restrict the integration of snappify by platforms at the moment. Are you interested? Hit us up at info@snappify.com
 
 ```ts
 import { openSnappify } from '@snappify/integration';

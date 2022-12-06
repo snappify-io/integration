@@ -6,7 +6,7 @@ const THIRD_PARTY_COOKIE_CHECK_URL =
   'https://3rdpartycookie.seriouscode.io/start.html';
 
 const DEFAULT_CONFIG: SnappifyConfig = {
-  url: 'https://snappify.io',
+  url: 'https://snappify.com',
 };
 
 export class SnappifyIntegration {
